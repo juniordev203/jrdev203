@@ -30,8 +30,42 @@ const personalInfo = {
 }
 
 const technologies = [
-    "TypeScript", "React", "Next.js", "Node.js",
-    , "Tailwind CSS", "Git"
+    {
+        id: 2,
+        name: "React",
+        link: "https://reactjs.org/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/react.svg"
+    },
+    {
+        id: 3,
+        name: "Next.js",
+        link: "https://nextjs.org/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nextdotjs.svg"
+    },
+    {
+        id: 1,
+        name: "Typescript",
+        link: "https://www.typescriptlang.org/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/typescript.svg"
+    },
+    {
+        id: 4,
+        name: "Node.js",
+        link: "https://nodejs.org/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@9.21.0/icons/nodedotjs.svg"
+    },
+    {
+        id: 5,
+        name: "Tailwind CSS",
+        link: "https://tailwindcss.com/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tailwindcss.svg"
+    },
+    {
+        id: 6,
+        name: "Git",
+        link: "https://git-scm.com/",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/git.svg"
+    }
 ]
 
 const featuredProjects = [
@@ -71,7 +105,7 @@ export default function HomePage() {
                         {/* Personal Info */}
                         <div className="space-y-6">
                             <div className="space-y-4">
-                                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+                                <h1 className="text-4xl lg:text-6xl font-bold tracking-wider">
                                     Xin chào, tôi là{" "}
                                     <span className="text-primary">{personalInfo.name}</span>
                                 </h1>
@@ -159,8 +193,17 @@ export default function HomePage() {
                     </div>
                     <div className="flex flex-wrap justify-center gap-3">
                         {technologies.map((tech) => (
-                            <Badge key={tech} variant="outline" className="text-sm py-2 px-4">
-                                {tech}
+                            <Badge key={tech.id} variant="outline" className="text-sm py-2 px-4">
+                                <a href={tech.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                    <Image
+                                        src={tech.icon}
+                                        alt={tech.name}
+                                        width={24}
+                                        height={24}
+                                        className="h-4 w-4"
+                                    />
+                                    {tech.name}
+                                </a>
                             </Badge>
                         ))}
                     </div>

@@ -55,10 +55,10 @@ export default function GithubStats() {
 
     const getContributionLevel = (count: number) => {
         if (count === 0) return "bg-muted"
-        if (count <= 3) return "bg-green-200 dark:bg-green-900"
-        if (count <= 6) return "bg-green-300 dark:bg-green-700"
-        if (count <= 9) return "bg-green-400 dark:bg-green-500"
-        return "bg-green-500 dark:bg-green-400"
+        if (count <= 3) return "bg-green-300 dark:bg-green-900"
+        if (count <= 6) return "bg-green-400 dark:bg-green-700"
+        if (count <= 9) return "bg-green-500 dark:bg-green-500"
+        return "bg-green-600 dark:bg-green-400"
     }
 
     const getRecentContributions = () => {
