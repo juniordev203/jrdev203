@@ -35,7 +35,6 @@ export default function RootLayout({
             <SidebarProvider>
               {/* <AppSidebar /> */}
               <div className="w-full">
-                <Header />
                 <main className="w-full">
                   {children}
                 </main>
