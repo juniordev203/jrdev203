@@ -26,9 +26,7 @@ const defaultValues = {
     email: "",
     password: "",
 };
-const handleLogin = () => {
 
-}
 const LoginForm = () => {
     const router = useRouter();
     const { mutateAsync: login, isPending } = useLoginMutate();

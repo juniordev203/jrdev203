@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 const GITHUB_USERNAME = "juniordev203"
 const GITHUB_ACCESS_TOKEN = process.env.NEXT_GITHUB_TOKEN
@@ -46,7 +46,7 @@ export async function GET() {
     })
 
     const data = await res.json()
-    
+
     if (data.errors) {
       return NextResponse.json(
         { success: false, data: null, error: data.errors[0]?.message || "GitHub API error" },
@@ -60,7 +60,7 @@ export async function GET() {
       error: null
     })
 
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, data: null, error: "Failed to fetch GitHub data" },
       { status: 500 }

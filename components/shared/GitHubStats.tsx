@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { GitCommit, Calendar, AlertCircle } from "lucide-react"
+import { GitCommit, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ContributionDay {
@@ -43,7 +43,7 @@ export default function GithubStats() {
                 } else {
                     setError(result.error || 'Không thể tải dữ liệu GitHub')
                 }
-            } catch (err) {
+            } catch {
                 setError('Lỗi kết nối API')
             } finally {
                 setLoading(false)
