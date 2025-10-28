@@ -14,6 +14,37 @@ import {
   BookOpenCheck
 } from 'lucide-react';
 
+export const skillLinks: Record<string, string> = {
+  // Languages
+  "Javascript": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+  "Typescript": "https://www.typescriptlang.org/",
+  "C#": "https://learn.microsoft.com/en-us/dotnet/csharp/",
+  "Python": "https://www.python.org/",
+
+  // Technologies
+  "React.Js": "https://react.dev/",
+  "NuxtJs": "https://nuxt.com/",
+  "Next.Js": "https://nextjs.org/",
+  "NodeJs": "https://nodejs.org/",
+  "Webpack": "https://webpack.js.org/",
+  "Vite": "https://vitejs.dev/",
+  "Docker": "https://www.docker.com/",
+
+  // UI Libraries
+  "Shadcn UI": "https://ui.shadcn.com/",
+  "Antd": "https://ant.design/",
+  "Tailwindcss": "https://tailwindcss.com/",
+  "Element Plus": "https://element-plus.org/",
+
+  // State Management
+  "Zustand": "https://zustand-demo.pmnd.rs/",
+  "Redux": "https://redux.js.org/",
+  "Pinia": "https://pinia.vuejs.org/",
+
+  // Database
+  "MySQL": "https://www.mysql.com/"
+};
+
 export const cvData = {
   personalInfo: {
     name: "Pham Huy Hoang",

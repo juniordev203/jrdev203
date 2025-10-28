@@ -1,6 +1,6 @@
 "use client"
 
-import { cvData } from "@/cvData"
+import { cvData, skillLinks } from "@/cvData"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Badge } from "./ui/badge"
@@ -40,15 +40,33 @@ export default function Skills() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {category.items.map((skill, i) => (
-                    <Badge
-                      key={i}
-                      variant="secondary"
-                      className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
+                  {category.items.map((skill, i) => {
+                    const link = skillLinks[skill]
+                    return link ? (
+                      <a
+                        key={i}
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                      >
+                        <Badge
+                          variant="secondary"
+                          className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
+                        >
+                          {skill}
+                        </Badge>
+                      </a>
+                    ) : (
+                      <Badge
+                        key={i}
+                        variant="secondary"
+                        className="cursor-default"
+                      >
+                        {skill}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </CardContent>
             </Card>
