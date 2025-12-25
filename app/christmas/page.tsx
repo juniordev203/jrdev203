@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // ============================================
 // CUSTOMIZATION VARIABLES
@@ -16,7 +17,9 @@ const CONFIG = {
   ],
   message: {
     title: 'Marry Christmas, Em!',
-    content: `Không biết vít rì cả, chúc em giáng sinh vui vẻ hihihi yêu emmm =)))) ❤️`,
+    content: `Không biết vít rì cả, chúc em giáng sinh vui vẻ hihihi yêu emmm =)))) 
+    Thật ra thì, baby hỏi khi nào về, anh tung ngay đồng xu uuuu
+    Chỉ là 50 50 ...❤️`,
   },
   bgMusic: '/music/tinhiugiuamuadong.mp3',
 };
@@ -36,6 +39,7 @@ export default function ChristmasPage() {
   const [showMessage, setShowMessage] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [musicStarted, setMusicStarted] = useState(false);
+  const [showHeartButton, setShowHeartButton] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Handle password submission
@@ -138,6 +142,10 @@ export default function ChristmasPage() {
           await audioRef.current.play();
           setMusicStarted(true);
           console.log('Music started successfully');
+          // Show heart button after 10 seconds
+          setTimeout(() => {
+            setShowHeartButton(true);
+          }, 10000);
         } catch (error) {
           console.log('Auto-play blocked, waiting for user interaction:', error);
         }
@@ -154,6 +162,10 @@ export default function ChristmasPage() {
           await audioRef.current.play();
           setMusicStarted(true);
           console.log('Music started after user interaction');
+          // Show heart button after 10 seconds
+          setTimeout(() => {
+            setShowHeartButton(true);
+          }, 10000);
           // Remove listeners after successful play
           document.removeEventListener('click', handleFirstInteraction);
           document.removeEventListener('touchstart', handleFirstInteraction);
@@ -484,6 +496,19 @@ export default function ChristmasPage() {
               </div>
             )}
 
+            {/* Heart Button - Appears after 10s */}
+            {showHeartButton && (
+              <Link href="/heart">
+                <button className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-gradient-to-r from-pink-500 via-red-500 to-rose-600 hover:from-pink-600 hover:via-red-600 hover:to-rose-700 text-white font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-full shadow-[0_0_40px_rgba(244,63,94,0.8)] hover:shadow-[0_0_60px_rgba(244,63,94,1)] transition-all duration-500 transform hover:scale-110 animate-fade-in-scale backdrop-blur-sm border-2 border-white/30">
+                  <span className="flex items-center gap-3">
+                    <span className="text-3xl animate-heartbeat">💝</span>
+                    <span>Mở Quà Thứ 2</span>
+                    <span className="text-3xl animate-heartbeat" style={{ animationDelay: '0.3s' }}>💝</span>
+                  </span>
+                </button>
+              </Link>
+            )}
+
           </div>
         </div>
       )}
@@ -499,6 +524,32 @@ export default function ChristmasPage() {
           }
           20%, 40%, 60%, 80% {
             transform: translateX(10px);
+          }
+        }
+
+        @keyframes fade-in-scale {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+          }
+          100% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+        }
+
+        @keyframes heartbeat {
+          0%, 100% {
+            transform: scale(1);
+          }
+          25% {
+            transform: scale(1.2);
+          }
+          50% {
+            transform: scale(1);
+          }
+          75% {
+            transform: scale(1.1);
           }
         }
 
@@ -631,6 +682,14 @@ export default function ChristmasPage() {
 
         .animate-shake {
           animation: shake 0.5s ease-in-out;
+        }
+
+        .animate-fade-in-scale {
+          animation: fade-in-scale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .animate-heartbeat {
+          animation: heartbeat 1.5s ease-in-out infinite;
         }
 
         .animate-snow {
