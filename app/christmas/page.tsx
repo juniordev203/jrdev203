@@ -15,7 +15,7 @@ const CONFIG = {
   ],
   message: {
     title: 'Marry Christmas, Em!',
-    content: `Không viết vít rì cả, chúc em giáng sinh vui vẻ ❤️`,
+    content: `Không biết vít rì cả, chúc em giáng sinh vui vẻ hihihi yêu emmm =)))) ❤️`,
   },
   bgMusic: '/music/tinhiugiuamuadong.mp3',
 };
@@ -335,9 +335,9 @@ export default function ChristmasPage() {
                 {showMessage && (
                   <div className="absolute bottom-0 left-0 right-0 z-30 pb-4 sm:pb-6 px-4 animate-slide-up-drawer">
                     <div className="max-w-lg mx-auto">
-                      <div className="relative backdrop-blur-2xl bg-white/15 border-2 border-white/30 rounded-3xl p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(255,255,255,0.1)] overflow-hidden">
+                      <div className=" ">
                         {/* Glass effect overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 pointer-events-none" />
 
                         {/* Decorative Corner Sparkles */}
                         <div className="absolute -top-3 -right-3 text-3xl animate-pulse-slow z-10">✨</div>
