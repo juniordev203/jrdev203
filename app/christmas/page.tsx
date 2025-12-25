@@ -8,6 +8,7 @@ import Image from 'next/image';
 // ============================================
 const CONFIG = {
   girlfriendName: 'Ín Nhi',
+  password: 'yeuanhhoang',
   photos: [
     '/image/anh1.jpg',
     '/image/anh2.jpg',
@@ -24,6 +25,9 @@ const CONFIG = {
 // MAIN COMPONENT
 // ============================================
 export default function ChristmasPage() {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
   const [phase, setPhase] = useState<'terminal' | 'reveal'>('terminal');
   const [terminalText, setTerminalText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
@@ -33,6 +37,30 @@ export default function ChristmasPage() {
   const [fadeOut, setFadeOut] = useState(false);
   const [musicStarted, setMusicStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Handle password submission
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput.toLowerCase() === CONFIG.password.toLowerCase()) {
+      setIsUnlocked(true);
+      setPasswordError(false);
+      // Save to sessionStorage để không phải nhập lại khi refresh
+      sessionStorage.setItem('christmas_unlocked', 'true');
+    } else {
+      setPasswordError(true);
+      setPasswordInput('');
+      // Shake effect by re-triggering error after a brief moment
+      setTimeout(() => setPasswordError(false), 500);
+    }
+  };
+
+  // Check if already unlocked in this session
+  useEffect(() => {
+    const unlocked = sessionStorage.getItem('christmas_unlocked');
+    if (unlocked === 'true') {
+      setIsUnlocked(true);
+    }
+  }, []);
 
   // Terminal script with timing
   const terminalScript = [
@@ -44,6 +72,8 @@ export default function ChristmasPage() {
 
   // Typewriter effect
   useEffect(() => {
+    if (!isUnlocked) return;
+
     let currentIndex = 0;
     let currentText = '';
     let scriptIndex = 0;
@@ -86,18 +116,22 @@ export default function ChristmasPage() {
 
     timeoutId = setTimeout(typeNextChar, 500);
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [isUnlocked]);
 
   // Cursor blink effect
   useEffect(() => {
+    if (!isUnlocked) return;
+
     const interval = setInterval(() => {
       setShowCursor((prev) => !prev);
     }, 500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isUnlocked]);
 
-  // Auto play music when component mounts
+  // Auto play music when page is unlocked
   useEffect(() => {
+    if (!isUnlocked) return;
+
     const playAudio = async () => {
       if (audioRef.current && !musicStarted) {
         try {
@@ -139,7 +173,7 @@ export default function ChristmasPage() {
       document.removeEventListener('touchstart', handleFirstInteraction);
       document.removeEventListener('keydown', handleFirstInteraction);
     };
-  }, [musicStarted]);
+  }, [isUnlocked, musicStarted]);
 
   // Generate 20 fairy lights with random positions
   const fairyLights = [
@@ -173,6 +207,83 @@ export default function ChristmasPage() {
     { top: '74%', left: '62%', color: 'bg-amber-300', shadow: 'shadow-[0_0_15px_#fcd34d]', delay: '1.0s' },
     { top: '78%', left: '50%', color: 'bg-yellow-300', shadow: 'shadow-[0_0_15px_#fde047]', delay: '0.5s' },
   ];
+
+  // If not unlocked, show password screen
+  if (!isUnlocked) {
+    return (
+      <div className="w-screen h-screen overflow-hidden relative bg-gradient-to-br from-[#0a1628] via-[#0d1f2d] to-[#0f3d2c] flex items-center justify-center">
+        {/* Falling Snow Background */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-white animate-snow"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `-${Math.random() * 20}%`,
+                width: `${Math.random() * 4 + 2}px`,
+                height: `${Math.random() * 4 + 2}px`,
+                animationDuration: `${Math.random() * 15 + 10}s`,
+                animationDelay: `${Math.random() * 5}s`,
+                opacity: Math.random() * 0.7 + 0.3,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Password Card */}
+        <div className="relative z-10 w-full max-w-md mx-auto px-4 animate-fade-in">
+          <div className="backdrop-blur-2xl bg-white/10 border-2 border-white/20 rounded-3xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+            {/* Lock Icon */}
+            <div className="text-center mb-6">
+              <div className="inline-block text-6xl mb-4 animate-bounce">🔒</div>
+              <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 bg-clip-text text-transparent">
+                Christmas Gift 🎄
+              </h1>
+              <p className="text-gray-300 text-sm">
+                Nhập mật khẩu để mở quà nhé! 💝
+              </p>
+            </div>
+
+            {/* Password Form */}
+            <form onSubmit={handlePasswordSubmit} className="space-y-4">
+              <div>
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="Nhập mật khẩu..."
+                  className={`w-full px-4 py-3 bg-white/10 border-2 ${
+                    passwordError ? 'border-red-500 animate-shake' : 'border-white/30'
+                  } rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-pink-400 transition-all duration-300`}
+                  autoFocus
+                />
+                {passwordError && (
+                  <p className="text-red-400 text-sm mt-2 animate-fade-in">
+                    ❌ Sai mật khẩu rồi! Thử lại nhé 😊
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Mở Quà 🎁
+              </button>
+            </form>
+
+            {/* Hint */}
+            <div className="mt-6 text-center">
+              <p className="text-gray-400 text-xs">
+                💡 Gợi ý: Câu nói của em với anh mỗi ngày...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-screen h-screen overflow-hidden relative">
@@ -379,6 +490,18 @@ export default function ChristmasPage() {
 
       {/* Custom Animations */}
       <style jsx global>{`
+        @keyframes shake {
+          0%, 100% {
+            transform: translateX(0);
+          }
+          10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-10px);
+          }
+          20%, 40%, 60%, 80% {
+            transform: translateX(10px);
+          }
+        }
+
         @keyframes snow {
           0% {
             transform: translateY(-10vh) translateX(0) rotate(0deg);
@@ -504,6 +627,10 @@ export default function ChristmasPage() {
             opacity: 0.6;
             transform: scale(1.1);
           }
+        }
+
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
         }
 
         .animate-snow {
