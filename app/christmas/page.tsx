@@ -31,7 +31,7 @@ export default function ChristmasPage() {
   const [showOrnaments, setShowOrnaments] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [musicStarted, setMusicStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Terminal script with timing
@@ -96,23 +96,50 @@ export default function ChristmasPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle audio play
-  const playMusic = () => {
-    if (audioRef.current && !musicPlaying) {
-      audioRef.current.play()
-        .then(() => setMusicPlaying(true))
-        .catch((error) => {
-          console.error('Audio playback failed:', error);
-        });
-    }
-  };
+  // Auto play music when component mounts
+  useEffect(() => {
+    const playAudio = async () => {
+      if (audioRef.current && !musicStarted) {
+        try {
+          await audioRef.current.play();
+          setMusicStarted(true);
+          console.log('Music started successfully');
+        } catch (error) {
+          console.log('Auto-play blocked, waiting for user interaction:', error);
+        }
+      }
+    };
 
-  // Try to play music on any user interaction during terminal phase
-  const handleScreenClick = () => {
-    if (phase === 'terminal' && !musicPlaying) {
-      playMusic();
-    }
-  };
+    // Try to play immediately
+    playAudio();
+
+    // If auto-play is blocked, try again on first user interaction
+    const handleFirstInteraction = async () => {
+      if (!musicStarted && audioRef.current) {
+        try {
+          await audioRef.current.play();
+          setMusicStarted(true);
+          console.log('Music started after user interaction');
+          // Remove listeners after successful play
+          document.removeEventListener('click', handleFirstInteraction);
+          document.removeEventListener('touchstart', handleFirstInteraction);
+          document.removeEventListener('keydown', handleFirstInteraction);
+        } catch (error) {
+          console.log('Failed to play music:', error);
+        }
+      }
+    };
+
+    document.addEventListener('click', handleFirstInteraction);
+    document.addEventListener('touchstart', handleFirstInteraction);
+    document.addEventListener('keydown', handleFirstInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
+  }, [musicStarted]);
 
   // Generate 20 fairy lights with random positions
   const fairyLights = [
@@ -148,10 +175,7 @@ export default function ChristmasPage() {
   ];
 
   return (
-    <div
-      className="w-screen h-screen overflow-hidden relative"
-      onClick={handleScreenClick}
-    >
+    <div className="w-screen h-screen overflow-hidden relative">
       {/* Hidden Audio Element */}
       <audio ref={audioRef} src={CONFIG.bgMusic} loop />
 
@@ -171,16 +195,6 @@ export default function ChristmasPage() {
       {/* Phase 2: Reveal */}
       {phase === 'reveal' && (
         <div className="fixed inset-0 bg-gradient-to-b from-[#0a1628] via-[#0d1f2d] to-[#0f3d2c]">
-          {/* Music Button */}
-          {!musicPlaying && (
-            <button
-              onClick={playMusic}
-              className="fixed top-4 right-4 z-50 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              🎵 Play Music
-            </button>
-          )}
-
           {/* Falling Snow */}
           <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
             {[...Array(40)].map((_, i) => (
@@ -278,16 +292,16 @@ export default function ChristmasPage() {
                       <>
                         {CONFIG.photos.map((photo, index) => {
                           const positions = [
-                            { top: '28%', left: '25%' },
-                            { top: '50%', left: '75%' },
-                            { top: '68%', left: '50%' },
+                            { top: '25%', left: '30%' },
+                            { top: '45%', left: '70%' },
+                            { top: '58%', left: '50%' },
                           ];
                           const position = positions[index] || { top: '50%', left: '50%' };
 
                           return (
                             <div
                               key={index}
-                              className="absolute animate-float-in z-15"
+                              className="absolute animate-float-in z-[25]"
                               style={{
                                 top: position.top,
                                 left: position.left,
