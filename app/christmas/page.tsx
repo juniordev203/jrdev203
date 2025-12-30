@@ -7,9 +7,11 @@ import Link from 'next/link';
 // ============================================
 // CUSTOMIZATION VARIABLES
 // ============================================
+
+const passwordConfig = process.env.NEXT_PUBLIC_PASSWORD;
 const CONFIG = {
   girlfriendName: 'Ín Nhi',
-  password: 'yeuanhhoang',
+  password: passwordConfig,
   photos: [
     '/image/anh1.jpg',
     '/image/anh2.jpg',
@@ -45,7 +47,7 @@ export default function ChristmasPage() {
   // Handle password submission
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput.toLowerCase() === CONFIG.password.toLowerCase()) {
+    if (passwordInput.toLowerCase() === CONFIG.password?.toLowerCase()) {
       setIsUnlocked(true);
       setPasswordError(false);
       // Save to sessionStorage để không phải nhập lại khi refresh
