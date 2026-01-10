@@ -1,8 +1,3 @@
-/**
- * HEART PAGE ISOLATED LAYOUT
- * Full-screen immersive experience
- */
-
 export default function HeartLayout({
   children,
 }: {
