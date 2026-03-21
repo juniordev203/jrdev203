@@ -41,7 +41,7 @@ export default function HomePage() {
                 <footer className="relative py-8 text-center border-t border-white/5">
                     <p className="text-sm text-muted-foreground font-mono">
                         Designed & Built by{" "}
-                        <span className="text-gradient-cyan font-semibold">@juniordev203</span>
+                        <span className="text-gradient-cyan font-semibold">@jrdev203</span>
                     </p>
                     <p className="text-xs text-muted-foreground/50 mt-1 font-mono">
                         © {new Date().getFullYear()} — Crafted with 💜 and lots of ☕
