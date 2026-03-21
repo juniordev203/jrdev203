@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "gen_api": "npx openapi --input http://localhost:5286/swagger/v1/swagger.json --output ./services/api --client axios",
-    "up_prisma": "pnpm exec prisma generate"
+    "up_prisma": "pnpm exec prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
