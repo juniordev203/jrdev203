@@ -50,7 +50,7 @@ export default function HomePage() {
             </div>
 
             {/* Floating reaction bar */}
-            <ReactionBar />
+            {/* <ReactionBar /> */}
         </div>
     )
 }
