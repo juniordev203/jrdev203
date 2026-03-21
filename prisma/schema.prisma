@@ -1,0 +1,14 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Reaction {
+  id    String @id @default("singleton")
+  happy Int    @default(0)
+  love  Int    @default(0)
+  sad   Int    @default(0)
+}

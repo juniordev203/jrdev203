@@ -2,9 +2,8 @@
 
 import { cvData } from "@/cvData"
 import { motion, AnimatePresence } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { Badge } from "./ui/badge"
-import { ExternalLink, ChevronDown, Building2, Calendar } from "lucide-react"
+import { ExternalLink, ChevronDown, Building2, Calendar, Zap } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
@@ -19,54 +18,72 @@ export default function Experience() {
     <motion.section
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       id="experience"
       className="scroll-mt-20"
     >
-      <div className="flex items-center gap-3 mb-8">
-        <experience.icon className="w-8 h-8 text-primary" />
-        <h2 className="text-3xl md:text-4xl font-bold">{experience.title}</h2>
+      {/* Section header */}
+      <div className="flex items-center gap-4 mb-12">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-neon-cyan/30" />
+        <div className="flex items-center gap-3">
+          <experience.icon className="w-8 h-8 text-neon-cyan" />
+          <h2 className="text-3xl md:text-4xl font-bold text-gradient-cyan">{experience.title}</h2>
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-neon-purple/30" />
       </div>
 
       <div className="grid lg:grid-cols-[300px_1fr] gap-8">
         {/* Timeline Navigation */}
-        <div className="space-y-2">
+        <div className="space-y-3 relative">
+          {/* Vertical glowing line */}
+          <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-neon-cyan/20 via-neon-purple/20 to-transparent hidden lg:block" />
+
           {experience.items.map((item, index) => (
             <motion.button
               key={index}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "w-full text-left p-4 rounded-lg transition-all duration-300 relative overflow-hidden group",
+                "w-full cursor-pointer text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group lg:ml-4",
                 selectedIndex === index
-                  ? "border-primary bg-primary/5 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-accent/50"
+                  ? "bg-gradient-to-r from-neon-cyan/10 to-neon-purple/5 border border-neon-cyan/30"
+                  : "bg-card/50 border border-white/5 hover:border-neon-cyan/20 hover:bg-card"
               )}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {/* Animated background on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Timeline dot */}
+              <div className={cn(
+                "absolute -left-[22px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 hidden lg:block transition-all duration-300",
+                selectedIndex === index
+                  ? "bg-neon-cyan border-neon-cyan shadow-[0_0_10px_rgba(0,245,255,0.5)]"
+                  : "bg-card border-white/20 group-hover:border-neon-cyan/50"
+              )} />
 
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-1">
-                  <Building2 className="w-4 h-4 text-primary" />
+                  <Building2 className={cn(
+                    "w-4 h-4 transition-colors",
+                    selectedIndex === index ? "text-neon-cyan" : "text-muted-foreground"
+                  )} />
                   <p className="font-semibold text-sm">{item.company}</p>
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-1">{item.role}</p>
-                <div className="flex items-center gap-1 mt-2">
+                <p className="text-xs text-muted-foreground line-clamp-1 ml-6">{item.role}</p>
+                <div className="flex items-center gap-1 mt-2 ml-6">
                   <Calendar className="w-3 h-3 text-muted-foreground" />
-                  <p className="text-xs text-muted-foreground">{item.duration}</p>
+                  <p className="text-xs text-muted-foreground font-mono">{item.duration}</p>
                 </div>
               </div>
 
-              {/* Selection indicator */}
+              {/* Active glow */}
               {selectedIndex === index && (
                 <motion.div
-                  layoutId="activeTab"
-                  className="absolute left-0 top-0 bottom-0 w-1 bg-primary"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  layoutId="exp-glow"
+                  className="absolute inset-0 rounded-xl pointer-events-none"
+                  style={{
+                    boxShadow: "inset 0 0 30px rgba(0, 245, 255, 0.05)",
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
             </motion.button>
@@ -77,51 +94,49 @@ export default function Experience() {
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: 20, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -20, scale: 0.98 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="hover:shadow-xl transition-shadow">
-              <CardHeader>
+            <div className="gradient-border">
+              <div className="bg-card rounded-lg p-8 space-y-6">
+                {/* Header */}
                 <div className="flex justify-between items-start flex-wrap gap-4">
                   <div className="space-y-2">
-                    <CardTitle className="text-2xl flex items-center gap-2">
+                    <h3 className="text-2xl font-bold flex items-center gap-3">
                       {selectedExperience.role}
                       {selectedExperience.link && (
                         <a
-                          href={selectedExperience.link}
+                          href={selectedExperience.link.startsWith("http") ? selectedExperience.link : `https://${selectedExperience.link}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:scale-110 transition-transform"
                         >
-                          <ExternalLink className="w-5 h-5 text-primary" />
+                          <ExternalLink className="w-5 h-5 text-neon-cyan" />
                         </a>
                       )}
-                    </CardTitle>
-                    <CardDescription className="text-base flex items-center gap-2">
-                      <Building2 className="w-4 h-4" />
+                    </h3>
+                    <p className="text-muted-foreground flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-neon-purple" />
                       {selectedExperience.company}
-                    </CardDescription>
+                    </p>
                   </div>
-                  <Badge variant="secondary" className="text-sm px-3 py-1">
-                    <Calendar className="w-3 h-3 mr-1" />
+                  <Badge className="bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20 font-mono">
+                    <Calendar className="w-3 h-3 mr-1.5" />
                     {selectedExperience.duration}
                   </Badge>
                 </div>
-              </CardHeader>
 
-              <CardContent className="space-y-6">
                 {/* Description */}
-                <motion.div
+                <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
+                  className="text-muted-foreground leading-relaxed"
                 >
-                  <p className="text-muted-foreground leading-relaxed">
-                    {selectedExperience.description}
-                  </p>
-                </motion.div>
+                  {selectedExperience.description}
+                </motion.p>
 
                 {/* Technologies */}
                 <motion.div
@@ -130,10 +145,10 @@ export default function Experience() {
                   transition={{ delay: 0.2 }}
                   className="space-y-3"
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
-                    <p className="text-sm font-semibold text-primary">Tech Stack</p>
-                    <div className="h-px flex-1 bg-gradient-to-l from-primary/50 to-transparent" />
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-4 h-4 text-neon-cyan" />
+                    <p className="text-sm font-semibold text-neon-cyan">Tech Stack</p>
+                    <div className="h-px flex-1 bg-gradient-to-r from-neon-cyan/20 to-transparent" />
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {selectedExperience.technologies.split(', ').map((tech, i) => (
@@ -143,11 +158,8 @@ export default function Experience() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.3 + i * 0.05 }}
                       >
-                        <Badge
-                          variant="outline"
-                          className="hover:bg-primary hover:text-primary-foreground transition-colors"
-                        >
-                          {tech}
+                        <Badge className="bg-gradient-to-r from-neon-cyan/10 to-neon-purple/10 border border-white/10 hover:border-neon-cyan/30 transition-all text-foreground">
+                          {tech.replace('.', '')}
                         </Badge>
                       </motion.div>
                     ))}
@@ -165,14 +177,14 @@ export default function Experience() {
                     onClick={() => setExpandedContributions(!expandedContributions)}
                     className="flex items-center justify-between w-full group"
                   >
-                    <div className="flex items-center gap-2">
-                      <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
-                      <p className="text-sm font-semibold text-primary">Key Contributions</p>
-                      <div className="h-px flex-1 bg-gradient-to-l from-primary/50 to-transparent" />
+                    <div className="flex items-center gap-3">
+                      <Zap className="w-4 h-4 text-neon-purple" />
+                      <p className="text-sm font-semibold text-neon-purple">Key Contributions</p>
+                      <div className="h-px flex-1 bg-gradient-to-r from-neon-purple/20 to-transparent" />
                     </div>
                     <ChevronDown
                       className={cn(
-                        "w-5 h-5 text-primary transition-transform",
+                        "w-5 h-5 text-neon-purple transition-transform",
                         expandedContributions && "rotate-180"
                       )}
                     />
@@ -187,7 +199,7 @@ export default function Experience() {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <ul className="space-y-3 pl-4">
+                        <ul className="space-y-4 pl-2">
                           {selectedExperience.contributions.map((contribution, i) => (
                             <motion.li
                               key={i}
@@ -196,8 +208,8 @@ export default function Experience() {
                               transition={{ delay: i * 0.1 }}
                               className="flex gap-3 group/item"
                             >
-                              <div className="flex-shrink-0 mt-1.5">
-                                <div className="w-2 h-2 rounded-full bg-primary group-hover/item:scale-150 transition-transform" />
+                              <div className="flex-shrink-0 mt-2">
+                                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-neon-cyan to-neon-purple group-hover/item:shadow-[0_0_8px_rgba(0,245,255,0.5)] transition-shadow" />
                               </div>
                               <p className="text-sm text-muted-foreground leading-relaxed group-hover/item:text-foreground transition-colors">
                                 {contribution}
@@ -209,23 +221,23 @@ export default function Experience() {
                     )}
                   </AnimatePresence>
                 </motion.div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Mobile Timeline Dots (optional visual enhancement) */}
+      {/* Mobile Timeline Dots */}
       <div className="flex justify-center gap-2 mt-6 lg:hidden">
         {experience.items.map((_, index) => (
           <button
             key={index}
             onClick={() => setSelectedIndex(index)}
             className={cn(
-              "w-2 h-2 rounded-full transition-all",
+              "h-2 rounded-full transition-all duration-300",
               selectedIndex === index
-                ? "bg-primary w-8"
-                : "bg-border hover:bg-primary/50"
+                ? "bg-gradient-to-r from-neon-cyan to-neon-purple w-8 shadow-[0_0_8px_rgba(0,245,255,0.4)]"
+                : "bg-white/10 w-2 hover:bg-white/20"
             )}
           />
         ))}
