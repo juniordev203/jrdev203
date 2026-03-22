@@ -1,4 +1,4 @@
-import Navigation from "@/components/Navigation"
+import ScrollProgressCircle from "@/components/ScrollProgressCircle"
 
 export default function MainLayout({
   children,
@@ -7,10 +7,8 @@ export default function MainLayout({
 }) {
   return (
     <>
-      {/* <Navigation /> */}
-      <div className="pt-16">
-        {children}
-      </div>
+      <ScrollProgressCircle />
+      {children}
     </>
   )
 }

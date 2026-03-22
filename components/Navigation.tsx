@@ -64,7 +64,7 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo / Brand */}
-            <Link href="/" className="flex items-center gap-2 group">
+            {/* <Link href="/" className="flex items-center gap-2 group">
               <div className="relative w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-bold text-sm text-background overflow-hidden">
                 PH
                 <div className="absolute inset-0 bg-gradient-to-br from-neon-purple to-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -72,7 +72,7 @@ export default function Navigation() {
               <span className="hidden sm:block text-sm font-semibold text-gradient-cyan">
                 jrdev203
               </span>
-            </Link>
+            </Link> */}
 
             {/* Nav items */}
             <div ref={containerRef} className="relative flex items-center gap-1 bg-white/5 rounded-full p-1">
@@ -90,7 +90,7 @@ export default function Navigation() {
                 />
               )}
 
-              {navItems.map((item, index) => {
+              {/* {navItems.map((item, index) => {
                 const Icon = item.icon
                 const isActive = index === activeIndex
 
@@ -108,7 +108,7 @@ export default function Navigation() {
                     {item.label}
                   </Link>
                 )
-              })}
+              })} */}
             </div>
           </div>
         </div>
