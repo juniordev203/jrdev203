@@ -7,7 +7,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <div className="pt-16">
         {children}
       </div>
