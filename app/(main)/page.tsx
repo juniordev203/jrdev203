@@ -5,7 +5,7 @@ import Skills from "@/components/Skills"
 import Education from "@/components/Education"
 import Contact from "@/components/Contact"
 import ReactionBar from "@/components/ReactionBar"
-import CursorGlow from "@/components/CursorGlow"
+import SplashCursor from "@/components/SplashCursor"
 
 export default function HomePage() {
     return (
@@ -18,8 +18,8 @@ export default function HomePage() {
                 <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-neon-pink/3 rounded-full blur-3xl" />
             </div>
 
-            {/* Cursor glow effect */}
-            <CursorGlow />
+            {/* Splash cursor effect */}
+            <SplashCursor />
 
             <div className="relative z-10">
                 <Hero />
